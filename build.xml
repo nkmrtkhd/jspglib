@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Last Modified <2011-11-10 21:03:47 by NAKAMURA Takahide> -->
+
+  <project name="jspglib" default="run" basedir=".">
+
+
+    <!-- environment -->
+    <property environment="env" />
+    <property name="dbg" value="on" />
+    <property name="java"      value="${JAVA_HOME}/bin/java" />
+    <property name="jar"       value="${JAVA_HOME}/bin/jar" />
+    <property name="jarsigner" value="${JAVA_HOME}/bin/jarsigner" />
+
+    <property name="javadoc.dir" value="javadoc" />
+    <property name="doctarget" value="converter:data:tools:viewer" />
+
+
+
+
+    <!-- set classpath -->
+    <path id="libpath_ref">
+      <pathelement path="." />
+    </path>
+
+    <target name="make" description="compile">
+      <javac includeAntRuntime="true" encoding="UTF-8" srcdir="." deprecation="on" debug="${dbg}" source="1.5" target="1.5">
+        <include name="JSpgLib.java" />
+      </javac>
+    </target>
+
+    <!-- run conv-->
+    <target name="run" depends="make" description="run">
+      <java classname="JSpgLib" classpath="." fork="yes" maxmemory="1024m"  >
+      </java>
+    </target>
+
+    <!-- jar -->
+    <!-- usage: >java -Xms1024m -Xmx1024m -jar AKIRA.jar  -->
+    <target name="jar" depends="make" >
+      <jar destfile="JSpgLib.jar" basedir=".">
+        <include name="*.class" />
+        <include name="*.jnilib" />
+        <manifest>
+          <attribute name="Main-Class" value="JSpgLib" />
+          <attribute name="Class-Path" value="." />
+          <attribute name="Implementation-Title" value="JSpgLib" />
+          <attribute name="Implementation-Version" value="1" />
+          <attribute name="Implementation-Vender" value="nkmrtkhd" />
+        </manifest>
+      </jar>
+    </target>
+
+
+    <target name="doc">
+      <mkdir dir="${javadoc.dir}" />
+      <javadoc
+        packagenames="JSpgLib*"
+        destdir="${javadoc.dir}"
+        author="true"
+        Private="true"
+        encoding="UTF-8" charset="UTF-8">
+        <fileset dir=".">
+          <include name="**/*.java"/>
+        </fileset>
+      </javadoc>
+    </target>
+
+    <!-- Clean -->
+    <target name="clean" >
+      <delete>
+        <fileset dir="." >
+          <include name="*.zip" />
+          <include name="*.pov" />
+          <include name="*.png" />
+          <include name="*.Akira" />
+          <include name="*.jar" />
+        </fileset>
+        <fileset dir="." includes="**/*.class" />
+        <fileset dir="." includes="**/*.orig" />
+      </delete>
+    </target>
+
+
+  </project>
