@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!-- Last Modified <2011-11-10 21:03:47 by NAKAMURA Takahide> -->
+<!-- Last Modified <2011-11-11 01:12:37 by NAKAMURA Takahide> -->
 
   <project name="jspglib" default="run" basedir=".">
 
@@ -24,7 +24,7 @@
 
     <target name="make" description="compile">
       <javac includeAntRuntime="true" encoding="UTF-8" srcdir="." deprecation="on" debug="${dbg}" source="1.5" target="1.5">
-        <include name="JSpgLib.java" />
+        <include name="jspblib/JSpgLib.java" />
       </javac>
     </target>
 
@@ -38,10 +38,10 @@
     <!-- usage: >java -Xms1024m -Xmx1024m -jar AKIRA.jar  -->
     <target name="jar" depends="make" >
       <jar destfile="JSpgLib.jar" basedir=".">
-        <include name="*.class" />
-        <include name="*.jnilib" />
+        <include name="jspglib/*.class" />
+        <!-- <include name="*.jnilib" /> -->
         <manifest>
-          <attribute name="Main-Class" value="JSpgLib" />
+          <attribute name="Main-Class" value="jspglib/JSpgLib" />
           <attribute name="Class-Path" value="." />
           <attribute name="Implementation-Title" value="JSpgLib" />
           <attribute name="Implementation-Version" value="1" />
