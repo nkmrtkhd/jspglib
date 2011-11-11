@@ -15,43 +15,29 @@ public class JSpgLib {
                                 double[] lattice,double[] position,int[] types,int num,double prec);
   public native String getInterNational(double[] lattice,double[] position,int[] types,int num,double prec);
   public native String getShoenflies(double[] lattice,double[] position,int[] types,int num,double prec);
-  /*
-   * public native void getDataset();
-   * public native void getIrReciprocalMesh();
-   */
+  public native void getDataset(double[] lattice,double[] position,int[] types,int num,double prec);
+  public native int getIrReciprocalMesh(double[] lattice,double[] position,int[] types,int num,double prec,
+                                         int[] grid_point, int[] map, int[] mesh, int[] is_shift);
 
   public static void main(String[] args) {
     //System.out.println("java.library.path= "+System.getProperty("java.library.path"));
 
     //testFindPrimitive();
     //testGetSym();
-    //    testRefineCell();
-    testgetInterNational();
+    //testRefineCell();
+    //testGetSymbol();
 
-    /*
-     * spg.refineCell();
-     * spg.getInterNational();
-     * spg.getShoenflies();
-     * spg.getMultiplicity();
-     * spg.getSymmetry();
-     * spg.getDataset();
-     * spg.getIrReciprocalMesh();
-     */
+    testGetIrRecprocalMesh();
   }
 
   static private void testFindPrimitive(){
     JSpgLib spg = new JSpgLib();
-    /*
-     * double[] lattice = { 4, 0, 0,
-     *                      0, 4, 0,
-     *                      0, 0, 4 };
-     */
     // ax, bx, cx
     // ay, by, cy
     // az, bz, cz
-    double[] lattice = { 1,2,3,
-                         4, 5,6,
-                         7,8,9 };
+    double[] lattice = { 4, 0, 0,
+                         0, 4, 0,
+                         0, 0, 4 };
     double[] position = {0.0, 0.0, 0.0,
                          0.5, 0.5, 0.5};
     int[] types = { 1, 1 };
@@ -118,8 +104,6 @@ public class JSpgLib {
         System.out.println(String.format("%2d %2d %2d", rotation[i*3*3+j*3+0], rotation[i*3*3+j*3+1], rotation[i*3*3+j*3+2]));
       System.out.println(String.format("%f %f %f", translation[i*3+0], translation[i*3+1],translation[i*3+2]));
     }
-
-
   }
 
   static private void testRefineCell(){
@@ -174,7 +158,7 @@ public class JSpgLib {
 
   }
 
-  static void testgetInterNational(){
+  static void testGetSymbol(){
     double[] lattice = {4,0,0,
                         0,4,0,
                         0,0,3};
@@ -198,6 +182,41 @@ public class JSpgLib {
     System.out.println("*** Example of spg_get_schoenflies ***:");
     String sh=spg.getShoenflies(lattice,position,types,num_atom,symprec);
     System.out.println(sh);
+
+    spg.getDataset(lattice,position,types,num_atom,symprec);
   }
 
-} //
+  static void testGetIrRecprocalMesh(){
+
+
+  double[] lattice = {4,0,0,
+                      0,4,0,
+                      0,0,3};
+  double[] position =
+    {0,0,0,
+     0.5,0.5,0.5,
+     0.3,0.3,0,
+     0.7,0.7,0,
+     0.2,0.8,0.5,
+     0.8,0.2,0.5,
+    };
+  int types[] = {1,1,2,2,2,2};
+  int num_atom = 6;
+    double symprec=1e-5;
+
+  int m=100;
+  int[] grid_point=new int[m*m*m*3];
+  int[] map=new int[m*m*m];
+  int mesh[] = { 250,250,250, };
+  int is_shift[] = { 1, 1, 1 };
+
+    JSpgLib spg = new JSpgLib();
+  int num_ir=spg.getIrReciprocalMesh(lattice,position,types,num_atom,symprec,
+                                     grid_point,map,mesh,is_shift);
+
+  System.out.println("Number of irreducible k-points of Rutile with");
+  System.out.println(String.format("8x8x8 Monkhorst-Pack mesh is %d.", num_ir));
+
+  }
+
+}
