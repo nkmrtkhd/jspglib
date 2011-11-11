@@ -13,12 +13,9 @@ public class JSpgLib {
   public native int getMultiplicity(double[] lattice,double[] position,int[] types,int num,double prec);
   public native int getSymmetry(int[] rotation,double[] translation,int max_size,
                                 double[] lattice,double[] position,int[] types,int num,double prec);
-
-
   public native String getInterNational(double[] lattice,double[] position,int[] types,int num,double prec);
+  public native String getShoenflies(double[] lattice,double[] position,int[] types,int num,double prec);
   /*
-   * public native void getShoenflies(String symbol,
-   *                                  double[] lattice,double[] position,int[] types,int num,double prec);
    * public native void getDataset();
    * public native void getIrReciprocalMesh();
    */
@@ -195,8 +192,12 @@ public class JSpgLib {
 
     JSpgLib spg = new JSpgLib();
     System.out.println("*** Example of spg_get_international ***");
-    String str=spg.getInterNational(lattice,position,types,num_atom,symprec);
-    System.out.println(str);
+    String in=spg.getInterNational(lattice,position,types,num_atom,symprec);
+    System.out.println(in);
+
+    System.out.println("*** Example of spg_get_schoenflies ***:");
+    String sh=spg.getShoenflies(lattice,position,types,num_atom,symprec);
+    System.out.println(sh);
   }
 
 } //
