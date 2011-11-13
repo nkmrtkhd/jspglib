@@ -8,6 +8,7 @@ public class JSpgLib {
   public JSpgLib() {
   }
 
+
   public native int findPrimitive(double[] lattice,double[] position,int[] types,int num,double prec);
   public native int refineCell(double[] lattice,double[] position,int[] types,int num,double prec);
   public native int getMultiplicity(double[] lattice,double[] position,int[] types,int num,double prec);
@@ -17,17 +18,16 @@ public class JSpgLib {
   public native String getShoenflies(double[] lattice,double[] position,int[] types,int num,double prec);
   public native void getDataset(double[] lattice,double[] position,int[] types,int num,double prec);
   public native int getIrReciprocalMesh(double[] lattice,double[] position,int[] types,int num,double prec,
-                                         int[] grid_point, int[] map, int[] mesh, int[] is_shift);
+                                        int[] grid_point, int[] map, int[] mesh, int[] is_shift);
+
 
   public static void main(String[] args) {
     //System.out.println("java.library.path= "+System.getProperty("java.library.path"));
-
-    //testFindPrimitive();
-    //testGetSym();
-    //testRefineCell();
-    //testGetSymbol();
-
-    testGetIrRecprocalMesh();
+    testFindPrimitive();
+    testGetSym();
+    testRefineCell();
+    testGetSymbol();
+    //testGetIrRecprocalMesh();
   }
 
   static private void testFindPrimitive(){
@@ -58,7 +58,7 @@ public class JSpgLib {
     for (int i=0; i<num_primitive_atom; i++) {
       System.out.println(String.format("%d: %f %f %f", types[i], position[i*3+0], position[i*3+1],position[i*3+2]));
     }
-
+    spg=null;
   }//testFindPrimitive
 
   static private void testGetSym(){
@@ -88,9 +88,7 @@ public class JSpgLib {
     double symprec = 1e-5;
 
     for (int i = 0; i < num_atom; i++ ) {
-      for (int j = 0; j < 3; j++ ) {
-        position[3*i+j] += origin_shift[j];
-      }
+      for (int j = 0; j < 3; j++ )position[3*i+j] += origin_shift[j];
     }
 
     JSpgLib spg = new JSpgLib();
@@ -104,6 +102,7 @@ public class JSpgLib {
         System.out.println(String.format("%2d %2d %2d", rotation[i*3*3+j*3+0], rotation[i*3*3+j*3+1], rotation[i*3*3+j*3+2]));
       System.out.println(String.format("%f %f %f", translation[i*3+0], translation[i*3+1],translation[i*3+2]));
     }
+    spg=null;
   }
 
   static private void testRefineCell(){
@@ -154,8 +153,7 @@ public class JSpgLib {
     int size=spg.getMultiplicity(lattice,position,types,num_atom,symprec);
     System.out.println("*** Example of spg_get_multiplicity ***");
     System.out.println(String.format("Number of symmetry operations: %d", size));
-
-
+    spg=null;
   }
 
   static void testGetSymbol(){
@@ -188,35 +186,35 @@ public class JSpgLib {
 
   static void testGetIrRecprocalMesh(){
 
-
-  double[] lattice = {4,0,0,
-                      0,4,0,
-                      0,0,3};
-  double[] position =
-    {0,0,0,
-     0.5,0.5,0.5,
-     0.3,0.3,0,
-     0.7,0.7,0,
-     0.2,0.8,0.5,
-     0.8,0.2,0.5,
-    };
-  int types[] = {1,1,2,2,2,2};
-  int num_atom = 6;
+    double[] lattice = {4,0,0,
+                        0,4,0,
+                        0,0,3};
+    double[] position =
+      {0,0,0,
+       0.5,0.5,0.5,
+       0.3,0.3,0,
+       0.7,0.7,0,
+       0.2,0.8,0.5,
+       0.8,0.2,0.5,
+      };
+    int types[] = {1,1,2,2,2,2};
+    int num_atom = 6;
     double symprec=1e-5;
 
-  int m=100;
-  int[] grid_point=new int[m*m*m*3];
-  int[] map=new int[m*m*m];
-  int mesh[] = { 250,250,250, };
-  int is_shift[] = { 1, 1, 1 };
+    int m=100;
+    int[] grid_point=new int[m*m*m*3];
+    int[] map=new int[m*m*m];
+    int mesh[] = { 250,250,250, };
+    int is_shift[] = { 1, 1, 1 };
 
     JSpgLib spg = new JSpgLib();
-  int num_ir=spg.getIrReciprocalMesh(lattice,position,types,num_atom,symprec,
-                                     grid_point,map,mesh,is_shift);
+    int num_ir=spg.getIrReciprocalMesh(lattice,position,types,num_atom,symprec,
+                                       grid_point,map,mesh,is_shift);
 
-  System.out.println("Number of irreducible k-points of Rutile with");
-  System.out.println(String.format("8x8x8 Monkhorst-Pack mesh is %d.", num_ir));
+    System.out.println("Number of irreducible k-points of Rutile with");
+    System.out.println(String.format("8x8x8 Monkhorst-Pack mesh is %d.", num_ir));
 
+    spg=null;
   }
 
 }
