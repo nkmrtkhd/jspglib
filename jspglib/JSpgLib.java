@@ -1,23 +1,141 @@
 package jspglib;
 
 public class JSpgLib {
+  /**
+   *
+   * @auther nkmrtkhd
+   *
+   */
   static {
     System.loadLibrary("interfaceJSpgLib");
   }
 
-  public JSpgLib() {
-  }
+  /**
+   * find primitive lattice and atoms.
+   * @return number of primitive atoms
+   * @param lattice { ax, bx, cx,
+   *                  ay, by, cy,
+   *                  az, bz, cz}
+   * @param position { r1x, r1y, r1z,
+   *                   r2x, r2y, r2z,
+   *                   ...}
+   * @param types { atom-1 type, atom-2 type, ...}
+   * @param num_atom number of atoms
+   * @param symprec precise of symmetry
+   */
+  public native int findPrimitive(double[] lattice,double[] position,int[] types,int num_atom,double symprec);
 
+  /**
+   * refine cell
+   * @return number of primitive atoms
+   * @param lattice { ax, bx, cx,
+   *                  ay, by, cy,
+   *                  az, bz, cz}
+   * @param position { r1x, r1y, r1z,
+   *                   r2x, r2y, r2z,
+   *                   ...}
+   * @param types { atom-1 type, atom-2 type, ...}
+   * @param num_atom number of atoms
+   * @param symprec precise of symmetry
+   */
+  public native int refineCell(double[] lattice,double[] position,int[] types,int num_atom,double symprec);
+  /**
+   * get multiplicity
+   * @return number of primitive atoms
+   * @param lattice { ax, bx, cx,
+   *                  ay, by, cy,
+   *                  az, bz, cz}
+   * @param position { r1x, r1y, r1z,
+   *                   r2x, r2y, r2z,
+   *                   ...}
+   * @param types { atom-1 type, atom-2 type, ...}
+   * @param num_atom number of atoms
+   * @param symprec precise of symmetry
+   */
+  public native int getMultiplicity(double[] lattice,double[] position,int[] types,int num_atom,double symprec);
 
-  public native int findPrimitive(double[] lattice,double[] position,int[] types,int num,double prec);
-  public native int refineCell(double[] lattice,double[] position,int[] types,int num,double prec);
-  public native int getMultiplicity(double[] lattice,double[] position,int[] types,int num,double prec);
+  /**
+   * get symmetry operations
+   * @return number of primitive atoms
+   * @param rotation rotation matrix ={ R1_11,R1_12,R1_13,R1_21,R1_22,R1_23,R1_31,R1_32,R1_33,
+   *                                    R2_11,R2_12,R2_13,R2_21,R2_22,R2_23,R2_31,R2_32,R2_33,
+   *                                    ...}
+   * @param translation translation vector={x1,y1,z1, x2,y2,z2, ...}
+   * @param max_size maximum size of rotation and translation
+   * @param lattice { ax, bx, cx,
+   *                  ay, by, cy,
+   *                  az, bz, cz}
+   * @param position { r1x, r1y, r1z,
+   *                   r2x, r2y, r2z,
+   *                   ...}
+   * @param types { atom-1 type, atom-2 type, ...}
+   * @param num_atom number of atoms
+   * @param symprec precise of symmetry
+   */
   public native int getSymmetry(int[] rotation,double[] translation,int max_size,
-                                double[] lattice,double[] position,int[] types,int num,double prec);
-  public native String getInterNational(double[] lattice,double[] position,int[] types,int num,double prec);
-  public native String getShoenflies(double[] lattice,double[] position,int[] types,int num,double prec);
-  public native void getDataset(double[] lattice,double[] position,int[] types,int num,double prec);
-  public native int getIrReciprocalMesh(double[] lattice,double[] position,int[] types,int num,double prec,
+                                double[] lattice,double[] position,int[] types,int num_atom,double symprec);
+
+  /**
+   * return international symbol
+   * @return international symbol as string
+   * @param lattice { ax, bx, cx,
+   *                  ay, by, cy,
+   *                  az, bz, cz}
+   * @param position { r1x, r1y, r1z,
+   *                   r2x, r2y, r2z,
+   *                   ...}
+   * @param types { atom-1 type, atom-2 type, ...}
+   * @param num_atom number of atoms
+   * @param symprec precise of symmetry
+   */
+  public native String getInterNational(double[] lattice,double[] position,int[] types,int num_atom,double symprec);
+
+  /**
+   * return Shoenflies
+   * @return Shoenflies symbol as string
+   * @param lattice { ax, bx, cx,
+   *                  ay, by, cy,
+   *                  az, bz, cz}
+   * @param position { r1x, r1y, r1z,
+   *                   r2x, r2y, r2z,
+   *                   ...}
+   * @param types { atom-1 type, atom-2 type, ...}
+   * @param num_atom number of atoms
+   * @param symprec precise of symmetry
+   */
+  public native String getShoenflies(double[] lattice,double[] position,int[] types,int num_atom,double symprec);
+
+  /**
+   * show symmetry data in detail
+   * @param lattice { ax, bx, cx,
+   *                  ay, by, cy,
+   *                  az, bz, cz}
+   * @param position { r1x, r1y, r1z,
+   *                   r2x, r2y, r2z,
+   *                   ...}
+   * @param types { atom-1 type, atom-2 type, ...}
+   * @param num_atom number of atoms
+   * @param symprec precise of symmetry
+   */
+  public native void getDataset(double[] lattice,double[] position,int[] types,int num_atom,double symprec);
+
+  /**
+   * show symmetry data in detail
+   * @param lattice { ax, bx, cx,
+   *                  ay, by, cy,
+   *                  az, bz, cz}
+   * @param position { r1x, r1y, r1z,
+   *                   r2x, r2y, r2z,
+   *                   ...}
+   * @param types { atom-1 type, atom-2 type, ...}
+   * @param num_atom number of atoms
+   * @param symprec precise of symmetry
+   * @param grid_point
+   * @param map
+   * @param mesh
+   * @param is_shift
+   */
+  public native int getIrReciprocalMesh(double[] lattice,double[] position,int[] types,int num_atom,double symprec,
                                         int[] grid_point, int[] map, int[] mesh, int[] is_shift);
 
 
